@@ -15,12 +15,11 @@ router.post( "/sessions/login" , ( req, res ) => {
     const email = req.body.email
     const password = req.body.password
     const sql = `SELECT * FROM users WHERE email = $1;`
-    
-    db.query(sql, [email] , (err, dbRes) => {
-        
-        
+
+    db.query(sql, [email], (err, dbRes) => {
+        //console.log(`**session controller ${Object.keys(dbRes.rows[0])}`)
         // console.log(`check db response ${dbRes.rows[0].first_name}`)
-        if ( dbRes.rows.length === 0 ){
+        if ( dbRes.rows.length == 0 ){
 
         // user not found re enter or .....
         res.locals.message =  'user not found re enter or .....'
