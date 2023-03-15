@@ -22,7 +22,8 @@ router.post('/users/new', ( req , res ) => {
     const sql = `SELECT * FROM users WHERE email = $1;`;
     
     db.query( sql , [email] , ( err , dbRes ) => {
-        if (dbRes.rows.length === 0) {
+        // check if email is i the database 
+        if (dbRes.rows.length == 0) {
             bcrypt.genSalt(10, (err , salt) => {
 
             bcrypt.hash(myPlaintextPassword, salt, (err, digestedPassword) => {
