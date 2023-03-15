@@ -24,6 +24,7 @@ router.post('/users/new', ( req , res ) => {
     db.query( sql , [email] , ( err , dbRes ) => {
         // check if email is i the database 
         if (dbRes.rows.length == 0) {
+            //console.log(`***** dbRes ${(dbRes.rows.length)}`)
             bcrypt.genSalt(10, (err , salt) => {
 
             bcrypt.hash(myPlaintextPassword, salt, (err, digestedPassword) => {
