@@ -19,9 +19,9 @@ router.post('/users/new', ( req , res ) => {
     const surname = req.body.surname;
     const myPlaintextPassword = req.body.password
 
-    const sql = `SELECT * FROM users WHERE email = '${email}';`;
-    console.log(sql)
-    db.query( sql , ( err , dbRes ) => {
+    const sql = `SELECT * FROM users WHERE email = $1;`;
+    
+    db.query( sql , [email] , ( err , dbRes ) => {
         if (dbRes.rows.length === 0) {
             bcrypt.genSalt(10, (err , salt) => {
 
@@ -38,18 +38,34 @@ router.post('/users/new', ( req , res ) => {
             
                 
             })
+            
+                
+            // })
+            // const sql = `SELECT id FROM users WHERE email = '${email}';`;
+            // db.query( sql , ( err , dbRes1 ) => { 
+            //     console.log(sql)
+            //     console.log(`dbRes after join ${Object.keys(dbRes1.rows)}`)
+            //     //req.session.userId = dbRes.rows[0].id
+
             //------------------- need to update / path user registered --------------------
-            res.redirect('/')    
+            
+            
+            //res.redirect("/")
+            res.locals.message = 'Welcom log in to Explore';
+            res.render('./users/login-form')    
         })} else {
-            const message = 'The Email you have entered is already registed';
-            res.render('./users/signup-form', { message :message })    
+            res.locals.message = '**The Email you have entered is already registed';
+            res.render('./users/signup-form' )    
         }
     //------------------- need to update / path email already exists registered --------------------
     })
     
 })
 
-
+router.get("/user/pass", (( req , res ) => {
+    console.log(req.locals.email)
+    res.render('/')
+}))
 
 
 

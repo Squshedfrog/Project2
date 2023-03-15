@@ -61,5 +61,5 @@ app.use('/', sessionController)
 
 app.listen(port, (err) => {
     if (err) console.log(err);
-    console.log(`Server listening on port ${port}`)
+    console.log(`-- ${new Date().toLocaleString()} Server listening on port ${port}`)
 })

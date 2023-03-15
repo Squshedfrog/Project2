@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 
 
 router.get( "/session", ( req , res ) => {
+    res.locals.message = ""
     res.render('./users/login-form')
 })
 
@@ -22,7 +23,8 @@ router.post( "/sessions/login" , ( req, res ) => {
         if ( dbRes.rows.length === 0 ){
 
         // user not found re enter or .....
-           res.render('./users/login-form', { message : 'user not found re enter or .....' })
+        res.locals.message =  'user not found re enter or .....'
+           res.render('./users/login-form')
            return
         }   
         const user = dbRes.rows[0]
@@ -38,11 +40,28 @@ router.post( "/sessions/login" , ( req, res ) => {
 
             } else {
                 //incorrect password
-                res.render('./users/login-form', { message : 'Incorrect password' })
+                res.locals.message = 'Incorrect password'
+                res.render('./users/login-form' )
             }
         })
     })
 })
+
+router.post("/sessions/newuser" , ( req , res ) => {
+    const email = locals.email
+
+    const sql = `SELECT * FROM users WHERE email = $1;`
+    
+    db.query(sql, [email] , (err, dbRes) => {
+        const user = dbRes.rows[0]
+        req.session.userId = user.id
+                
+                
+        res.redirect('/')
+        
+    })
+})
+
 
 router.delete( "/sessions/logout" , ( req , res ) => {
     req.session.destroy(() => {
